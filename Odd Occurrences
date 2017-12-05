@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+
+
+
+class OddOccurrences
+{
+    static void Main(string[] args)
+    {
+        string[] arrStr = Console.ReadLine().ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        var oddStr = new Dictionary<string, int>();
+        foreach (var item in arrStr)
+        {
+            if (!oddStr.ContainsKey(item))
+            {
+                oddStr[item] = 1;
+            }
+            else
+            {
+                oddStr[item]++;
+            }            
+        }
+
+        var listStr = new List<string>();
+
+        foreach (var item in oddStr)
+        {
+            string word = item.Key;
+            int count = item.Value;
+
+            if (count % 2 == 1)
+            {
+                listStr.Add(word);
+            }
+        }
+
+        Console.WriteLine(string.Join(", ", listStr));
+    }
+}
+
