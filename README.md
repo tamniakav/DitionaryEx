@@ -1,0 +1,2 @@
+# DitionaryEx
+Training dictionary
