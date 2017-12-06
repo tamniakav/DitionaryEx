@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace P06.FoldAndSum
+{
+    class FoldAndSum
+    {
+        static void Main(string[] args)
+        {
+            int[] intArr = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            int k = intArr.Length / 4;
+            int n = k * 2;
+
+            int[] firstPart = new int[k];
+            int[] lastPart = new int[k];
+            int[] middlelPart = new int[n];
+            
+            firstPart = intArr.Take(k).Reverse().ToArray();
+            middlelPart = intArr.Skip(k).Take(n).ToArray();
+            
+            lastPart = intArr.Reverse().Take(k).ToArray();
+
+            firstPart = firstPart.Concat(lastPart).ToArray();
+
+            int[] sum = new int[k * 2];
+
+            for (int i = 0; i < n; i++)
+            {
+                sum[i] = firstPart[i] + middlelPart[i];
+            }
+
+            Console.WriteLine(string.Join(" ", sum));
+        }
+    }
+}
