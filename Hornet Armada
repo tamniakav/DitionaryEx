@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace P07.HornetArmada
+{
+    class HornetArmada
+    {
+        static void Main(string[] args)
+        {
+            int n = int.Parse(Console.ReadLine());
+            var activityLegion = new Dictionary<string, long>();
+            var soldierCount = new Dictionary<string, Dictionary<string, long>>();
+
+            for (int i = 0; i < n; i++)
+            {
+                string[] data = Console.ReadLine().Split("=->: ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                long activity = long.Parse(data[0]);
+                string legion = data[1];
+                string soldier = data[2];
+                long count = long.Parse(data[3]);
+
+                if (!activityLegion.ContainsKey(legion))
+                {
+                    activityLegion.Add(legion, activity);
+
+                }
+                else
+                {
+                    if (activityLegion[legion] < activity)
+                    {
+                        activityLegion[legion] = activity;
+                    }
+                }
+
+                if (!soldierCount.ContainsKey(legion))
+                {
+                    soldierCount.Add(legion, new Dictionary<string, long>());
+                    soldierCount[legion].Add(soldier, count);
+                }
+                else
+                {
+                    if (!soldierCount[legion].ContainsKey(soldier))
+                    {
+                        soldierCount[legion].Add(soldier, count);
+                    }
+                    else
+                    {
+                        soldierCount[legion][soldier] += count;
+                    }
+                }
+            }
+
+            string command = Console.ReadLine();
+
+            if (command.IndexOf("\\") != -1)
+            {
+                long act = long.Parse(command.Substring(0, command.IndexOf("\\")));
+                string sol = command.Substring(command.IndexOf("\\") + 1);
+
+                foreach (var item in soldierCount.Where(e => soldierCount[e.Key].ContainsKey(sol)).OrderByDescending(x => x.Value[sol]))
+                {
+                    if (activityLegion[item.Key] < act)
+                    {
+                            Console.WriteLine("{0} -> {1}", item.Key, item.Value[sol]);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in activityLegion.OrderByDescending(x => x.Value))
+                {
+                    if (soldierCount[item.Key].ContainsKey(command))
+                    {
+                        Console.WriteLine("{1} : {0}", item.Key, item.Value);
+                    }
+                }
+            }
+        }
+    }
+}
